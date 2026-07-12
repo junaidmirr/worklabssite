@@ -971,7 +971,7 @@ function Contact() {
                 
                 <div className="mb-6 flex justify-center">
                   <Turnstile 
-                    siteKey="0x4AAAAAAC94u7BeJiQhw-i8" 
+                    siteKey="0x4AAAAAAD0FO8obajLmm3xs" 
                     onSuccess={(token) => setTurnstileToken(token)} 
                     options={{ theme: dark ? 'dark' : 'light' }}
                   />
