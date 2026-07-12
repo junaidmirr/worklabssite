@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import { Turnstile } from '@marsidev/react-turnstile'
 import InteractiveDemos from './InteractiveDemos'
+import Terms from './Terms'
 import './index.css'
 
 // ─── Logo SVG ─────────────────────────────────────────────────────────────────
@@ -226,7 +227,7 @@ function Hero() {
                 <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
               </div>
               <video 
-                src="https://github.com/junaidmirr/worklabs/raw/e08edaaed8e82bd67f76f21cedf680739b9ead88/www.worklabs.studio.mp4"
+                src="https://github.com/junaidmirr/worklabs/raw/refs/heads/main/www.worklabs.studio-2.mp4"
                 autoPlay 
                 loop 
                 muted 
@@ -1062,6 +1063,15 @@ function Footer() {
                   </button>
                 </li>
               ))}
+              <li>
+                <button onClick={() => { window.location.hash = 'terms'; window.scrollTo(0,0); }}
+                  className="text-[13px] cursor-pointer bg-transparent border-none text-left transition-all duration-200"
+                  style={{ color: 'var(--c-text-2)' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--c-text)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--c-text-2)')}>
+                  Terms & Conditions
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -1103,10 +1113,15 @@ function WhatsAppButton() {
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [dark, setDark] = useState(true)
+  const [route, setRoute] = useState(window.location.hash.replace('#', '') || 'home')
 
   useEffect(() => {
     const saved = localStorage.getItem('wl-theme')
     if (saved === 'light') setDark(false)
+
+    const onHashChange = () => setRoute(window.location.hash.replace('#', '') || 'home')
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
   const toggle = () => setDark(d => {
@@ -1125,16 +1140,22 @@ export default function App() {
       <div style={{ minHeight: '100vh', background: 'var(--c-bg)', color: 'var(--c-text)', transition: 'background 0.35s, color 0.35s' }}>
         <Navbar />
         <main>
-          <Hero />
-          <IndustriesTicker />
-          <InteractiveDemos />
-          <Services />
-          <NumbersSection />
-          <WhyUs />
-          <Process />
-          <Testimonials />
-          <FAQ />
-          <Contact />
+          {route === 'terms' ? (
+            <Terms />
+          ) : (
+            <>
+              <Hero />
+              <IndustriesTicker />
+              <InteractiveDemos />
+              <Services />
+              <NumbersSection />
+              <WhyUs />
+              <Process />
+              <Testimonials />
+              <FAQ />
+              <Contact />
+            </>
+          )}
         </main>
         <Footer />
         <WhatsAppButton />

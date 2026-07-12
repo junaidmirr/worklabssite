@@ -128,3 +128,30 @@ body {
 
 /* ── Number highlight ─────────────────────────────────────────────── */
 .num-highlight { color: var(--c-accent); font-weight: 900; }
+
+/* Terms & Conditions Prose Styles */
+.terms-content h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--c-text);
+  letter-spacing: -0.025em;
+}
+.terms-content p {
+  margin-bottom: 1.25rem;
+  line-height: 1.7;
+  color: var(--c-text-2);
+  font-size: 0.95rem;
+}
+.terms-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--c-text-2);
+}
+.terms-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
