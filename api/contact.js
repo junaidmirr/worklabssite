@@ -1,4 +1,4 @@
-const Mailjet = require('node-mailjet');
+import Mailjet from 'node-mailjet';
 
 export default async function handler(req, res) {
   // Handle CORS for local dev just in case
