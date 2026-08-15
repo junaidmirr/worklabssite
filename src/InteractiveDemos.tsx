@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Database, Dumbbell, Stethoscope, Store, ArrowRight, ChevronLeft, Phone, MessageCircle, Calendar } from 'lucide-react';
+import { useCurrency } from './CurrencyContext';
 
 // ─── Shared Mockup Wrapper (macOS style window) ───────────────────────────────
 function MockupFrame({ children, title }: { children: React.ReactNode, title: string }) {
@@ -28,6 +29,7 @@ function MockupFrame({ children, title }: { children: React.ReactNode, title: st
 // ─── Individual Mockups ───────────────────────────────────────────────────────
 
 function ERPMockup({ businessName }: { businessName: string }) {
+  const { formatPrice } = useCurrency();
   return (
     <div className="flex h-full bg-slate-50">
       <div className="w-48 bg-slate-900 text-white p-4 flex flex-col gap-4 hidden sm:flex">
@@ -43,7 +45,7 @@ function ERPMockup({ businessName }: { businessName: string }) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
             <div className="text-xs text-slate-500 mb-1">Total Revenue</div>
-            <div className="text-lg font-bold text-slate-800">$24,590</div>
+            <div className="text-lg font-bold text-slate-800">{formatPrice(24590)}</div>
           </div>
           <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
             <div className="text-xs text-slate-500 mb-1">Active Orders</div>
@@ -266,7 +268,6 @@ export default function InteractiveDemos() {
                   onChange={e => setBusinessName(e.target.value)}
                   placeholder="e.g. Apex Fitness"
                   required
-                  autoFocus
                   className="w-full px-4 py-3 rounded-xl outline-none transition-all text-sm"
                   style={{ background: 'var(--c-bg)', border: '1px solid var(--c-border)', color: 'var(--c-text)' }}
                   onFocus={e => { e.target.style.borderColor = 'var(--c-accent)'; e.target.style.boxShadow = '0 0 0 3px var(--c-accent-glow)' }}

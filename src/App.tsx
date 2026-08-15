@@ -8,6 +8,7 @@ import {
 import { Turnstile } from '@marsidev/react-turnstile'
 import InteractiveDemos from './InteractiveDemos'
 import Terms from './Terms'
+import { useCurrency } from './CurrencyContext'
 import './index.css'
 
 // ─── Logo SVG ─────────────────────────────────────────────────────────────────
@@ -80,6 +81,26 @@ function ThemeToggle() {
   )
 }
 
+// ─── Currency Selector ────────────────────────────────────────────────────────
+function CurrencySelector() {
+  const { currency, setCurrency } = useCurrency()
+  const currencies = ['USD', 'EUR', 'GBP', 'INR', 'AUD', 'CAD']
+
+  return (
+    <div className="relative group">
+      <select 
+        value={currency} 
+        onChange={(e) => setCurrency(e.target.value)}
+        className="appearance-none bg-transparent border-none text-[13.5px] font-medium cursor-pointer transition-colors duration-200 pl-3 pr-6 py-1.5 rounded-lg outline-none"
+        style={{ color: 'var(--c-text-2)', background: 'var(--c-bg-elevated)', border: '1px solid var(--c-border)' }}
+      >
+        {currencies.map(c => <option key={c} value={c}>{c}</option>)}
+      </select>
+      <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--c-text-3)' }} />
+    </div>
+  )
+}
+
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -122,6 +143,7 @@ function Navbar() {
         </div>
 
         <div className="flex items-center gap-2.5">
+          <CurrencySelector />
           <ThemeToggle />
           <button id="nav-cta" onClick={() => to('contact')}
             className="hidden md:flex items-center gap-1.5 text-[13.5px] font-semibold text-white px-4 py-2 rounded-lg cursor-pointer border-none transition-all duration-200 hover:-translate-y-0.5"
@@ -297,53 +319,55 @@ function IndustriesTicker() {
 }
 
 // ─── Services ─────────────────────────────────────────────────────────────────
-const SERVICES = [
-  {
-    Icon: Globe,
-    title: 'Website Development',
-    tagline: 'Your 24/7 salesperson that never sleeps',
-    desc: '68% of consumers judge a business by its website before making contact. We build fast, modern, mobile first websites that load in under 2 seconds, rank on Google, and turn visitors into paying customers not templates, fully custom.',
-    bullets: ['Custom design no templates', 'Mobile first & SEO ready', 'Under 2 second load time', 'Google Analytics & tracking'],
-  },
-  {
-    Icon: Smartphone,
-    title: 'Mobile App Development',
-    tagline: 'Put your business in every pocket',
-    desc: '67% of consumers prefer to interact with a business through a dedicated app. We build iOS & Android apps that increase customer retention, enable push notifications, and open revenue channels you never had before.',
-    bullets: ['iOS & Android (cross-platform)', 'Booking & ordering systems', 'Push notifications & loyalty', 'Offline-first architecture'],
-  },
-  {
-    Icon: Code2,
-    title: 'Custom Software & Automation',
-    tagline: 'Eliminate the work that wastes your time',
-    desc: "Still running your business on spreadsheets and WhatsApp groups? We build custom internal tools, CRMs, inventory systems, and automations that eliminate manual tasks and give you back 10+ hours every single week.",
-    bullets: ['Custom CRM & dashboards', 'Inventory & order management', 'Workflow automation', 'API & third-party integrations'],
-  },
-  {
-    Icon: ShoppingCart,
-    title: 'E-commerce Solutions',
-    tagline: 'Start selling online in as little as 2 weeks',
-    desc: 'We build complete, professional online stores product management, payment gateways (Stripe, PayPal, local), order tracking, customer accounts, and everything your business needs to sell 24/7 without lifting a finger.',
-    bullets: ['Full product catalog & variants', 'Multi payment gateway support', 'Order & shipping management', 'Abandoned cart & email automation'],
-  },
-  {
-    Icon: ShieldCheck,
-    title: 'IT Support & Security',
-    tagline: 'One cyberattack costs SMBs an average of $25,000',
-    desc: "Don't let that be you. We provide proactive server monitoring, automated daily backups, SSL management, firewall setup, and rapid response support so your systems are always protected and you're never down during peak hours.",
-    bullets: ['24/7 uptime monitoring', 'Daily automated backups', 'SSL & security audits', 'Priority support SLA'],
-  },
-  {
-    Icon: BarChart3,
-    title: 'Digital Strategy Consulting',
-    tagline: 'Clarity before a single line of code is written',
-    desc: "Not sure what you need? Start here free. We analyze your current setup, understand your business goals, and deliver a clear, honest tech roadmap. No upselling. No jargon. Just a practical plan with real ROI projections.",
-    bullets: ['Business & tech audit', 'Competitor benchmarking', 'ROI-focused roadmap', 'Budget planning & phased approach'],
-  },
-]
-
 function Services() {
+  const { formatPrice } = useCurrency()
   const ref = useFadeUp()
+  
+  const SERVICES = [
+    {
+      Icon: Globe,
+      title: 'Website Development',
+      tagline: 'Your 24/7 salesperson that never sleeps',
+      desc: '68% of consumers judge a business by its website before making contact. We build fast, modern, mobile first websites that load in under 2 seconds, rank on Google, and turn visitors into paying customers not templates, fully custom.',
+      bullets: ['Custom design no templates', 'Mobile first & SEO ready', 'Under 2 second load time', 'Google Analytics & tracking'],
+    },
+    {
+      Icon: Smartphone,
+      title: 'Mobile App Development',
+      tagline: 'Put your business in every pocket',
+      desc: '67% of consumers prefer to interact with a business through a dedicated app. We build iOS & Android apps that increase customer retention, enable push notifications, and open revenue channels you never had before.',
+      bullets: ['iOS & Android (cross-platform)', 'Booking & ordering systems', 'Push notifications & loyalty', 'Offline-first architecture'],
+    },
+    {
+      Icon: Code2,
+      title: 'Custom Software & Automation',
+      tagline: 'Eliminate the work that wastes your time',
+      desc: "Still running your business on spreadsheets and WhatsApp groups? We build custom internal tools, CRMs, inventory systems, and automations that eliminate manual tasks and give you back 10+ hours every single week.",
+      bullets: ['Custom CRM & dashboards', 'Inventory & order management', 'Workflow automation', 'API & third-party integrations'],
+    },
+    {
+      Icon: ShoppingCart,
+      title: 'E-commerce Solutions',
+      tagline: 'Start selling online in as little as 2 weeks',
+      desc: 'We build complete, professional online stores product management, payment gateways (Stripe, PayPal, local), order tracking, customer accounts, and everything your business needs to sell 24/7 without lifting a finger.',
+      bullets: ['Full product catalog & variants', 'Multi payment gateway support', 'Order & shipping management', 'Abandoned cart & email automation'],
+    },
+    {
+      Icon: ShieldCheck,
+      title: 'IT Support & Security',
+      tagline: `One cyberattack costs SMBs an average of ${formatPrice(25000)}`,
+      desc: "Don't let that be you. We provide proactive server monitoring, automated daily backups, SSL management, firewall setup, and rapid response support so your systems are always protected and you're never down during peak hours.",
+      bullets: ['24/7 uptime monitoring', 'Daily automated backups', 'SSL & security audits', 'Priority support SLA'],
+    },
+    {
+      Icon: BarChart3,
+      title: 'Digital Strategy Consulting',
+      tagline: 'Clarity before a single line of code is written',
+      desc: "Not sure what you need? Start here free. We analyze your current setup, understand your business goals, and deliver a clear, honest tech roadmap. No upselling. No jargon. Just a practical plan with real ROI projections.",
+      bullets: ['Business & tech audit', 'Competitor benchmarking', 'ROI-focused roadmap', 'Budget planning & phased approach'],
+    },
+  ]
+
   return (
     <section id="services" className="py-24 my-20 md:py-32" style={{ borderTop: '1px solid var(--c-border)' }}>
       <div className="max-w-6xl mx-auto px-6 md:px-10">
@@ -365,7 +389,15 @@ function Services() {
   )
 }
 
-function ServiceCard({ service, delay }: { service: typeof SERVICES[0]; delay: number }) {
+interface ServiceType {
+  Icon: React.ElementType;
+  title: string;
+  tagline: string;
+  desc: string;
+  bullets: string[];
+}
+
+function ServiceCard({ service, delay }: { service: ServiceType; delay: number }) {
   const ref = useFadeUp(delay)
   const { Icon } = service
   return (
@@ -382,7 +414,7 @@ function ServiceCard({ service, delay }: { service: typeof SERVICES[0]; delay: n
       <p className="text-[12px] font-semibold mb-3" style={{ color: 'var(--c-accent)' }}>{service.tagline}</p>
       <p className="text-[13.5px] leading-relaxed mb-5 flex-1" style={{ color: 'var(--c-text-2)' }}>{service.desc}</p>
       <ul className="flex flex-col gap-2">
-        {service.bullets.map(b => (
+        {service.bullets.map((b: string) => (
           <li key={b} className="flex items-center gap-2 text-[12.5px] font-medium" style={{ color: 'var(--c-text-2)' }}>
             <CheckCircle size={13} style={{ color: 'var(--c-accent)', flexShrink: 0 }} /> {b}
           </li>
@@ -394,12 +426,13 @@ function ServiceCard({ service, delay }: { service: typeof SERVICES[0]; delay: n
 
 // ─── Numbers / Social Proof ───────────────────────────────────────────────────
 function NumbersSection() {
+  const { formatPrice } = useCurrency()
   const ref = useFadeUp()
   const stats = [
     { num: '60+', label: 'Projects shipped', sub: 'Across 12+ industries' },
     { num: '3×', label: 'Avg. revenue increase', sub: 'For our e-commerce clients' },
     { num: '14 days', label: 'Avg. website launch', sub: 'From kickoff to live' },
-    { num: '$0', label: 'Hidden fees — ever', sub: 'Fixed-price contracts only' },
+    { num: formatPrice(0), label: 'Hidden fees — ever', sub: 'Fixed-price contracts only' },
     { num: '98%', label: 'Client retention', sub: 'Clients who come back for more' },
     { num: '90 days', label: 'Free post-launch support', sub: 'On every project we deliver' },
   ]
@@ -698,36 +731,38 @@ function Testimonials() {
 }
 
 // ─── FAQ ──────────────────────────────────────────────────────────────────────
-const FAQS = [
-  {
-    q: 'How much does a project cost?',
-    a: "Project pricing depends on scope and complexity. A professional website typically starts from $800. Mobile apps start from $3,500. Custom software from $2,500. We provide a fixed-price quote before any work begins — you will never receive a surprise invoice.",
-  },
-  {
-    q: 'How long does it take to build my website or app?',
-    a: "Most websites are delivered in 10–14 business days. Mobile apps typically take 4–8 weeks. Custom software ranges from 3–12 weeks depending on complexity. We will give you an exact timeline in your proposal.",
-  },
-  {
-    q: 'Do I own the code and design after delivery?',
-    a: "Absolutely. Once the project is paid in full, you own 100% of the code, design files, content, and all related assets. No licensing fees, no lock-in. It is yours to keep, host anywhere, and develop further with anyone.",
-  },
-  {
-    q: 'Can you work with my existing website or systems?',
-    a: "Yes. We regularly integrate with existing platforms, migrate content from old systems, and build on top of existing infrastructure. Send us what you have and we will tell you exactly what is possible.",
-  },
-  {
-    q: 'What happens after my project launches?',
-    a: "Every project includes 90 days of free post-launch support — bug fixes, minor content updates, and technical guidance. After that, you can choose one of our affordable monthly maintenance plans or manage things yourself. We never hold your project hostage.",
-  },
-  {
-    q: 'Do you only work with local businesses?',
-    a: "Our specialty and passion is helping local and small businesses grow through technology. That said, we work with any business that values a close working relationship, honest communication, and quality craftsmanship over volume.",
-  },
-]
-
 function FAQ() {
+  const { formatPrice } = useCurrency()
   const ref = useFadeUp()
   const [open, setOpen] = useState<number | null>(null)
+  
+  const FAQS = [
+    {
+      q: 'How much does a project cost?',
+      a: `Project pricing depends on scope and complexity. A professional website typically starts from ${formatPrice(800)}. Mobile apps start from ${formatPrice(3500)}. Custom software from ${formatPrice(2500)}. We provide a fixed-price quote before any work begins — you will never receive a surprise invoice.`,
+    },
+    {
+      q: 'How long does it take to build my website or app?',
+      a: "Most websites are delivered in 10–14 business days. Mobile apps typically take 4–8 weeks. Custom software ranges from 3–12 weeks depending on complexity. We will give you an exact timeline in your proposal.",
+    },
+    {
+      q: 'Do I own the code and design after delivery?',
+      a: "Absolutely. Once the project is paid in full, you own 100% of the code, design files, content, and all related assets. No licensing fees, no lock-in. It is yours to keep, host anywhere, and develop further with anyone.",
+    },
+    {
+      q: 'Can you work with my existing website or systems?',
+      a: "Yes. We regularly integrate with existing platforms, migrate content from old systems, and build on top of existing infrastructure. Send us what you have and we will tell you exactly what is possible.",
+    },
+    {
+      q: 'What happens after my project launches?',
+      a: "Every project includes 90 days of free post-launch support — bug fixes, minor content updates, and technical guidance. After that, you can choose one of our affordable monthly maintenance plans or manage things yourself. We never hold your project hostage.",
+    },
+    {
+      q: 'Do you only work with local businesses?',
+      a: "Our specialty and passion is helping local and small businesses grow through technology. That said, we work with any business that values a close working relationship, honest communication, and quality craftsmanship over volume.",
+    },
+  ]
+
   return (
     <section id="faq" className="py-24 md:py-28" style={{ borderTop: '1px solid var(--c-border)', background: 'var(--c-bg-card)' }}>
       <div className="max-w-3xl mx-auto px-6 md:px-10">
@@ -769,6 +804,7 @@ function FAQ() {
 
 // ─── Contact Form ─────────────────────────────────────────────────────────────
 function Contact() {
+  const { formatPrice } = useCurrency()
   const ref = useFadeUp()
   const { dark } = useTheme()
   const [submitted, setSubmitted] = useState(false)
@@ -955,10 +991,10 @@ function Contact() {
                   <select id="budget" name="budget" style={{ ...iStyle, cursor: 'pointer' }}
                     value={form.budget} onChange={onChange} onFocus={onFocus} onBlur={onBlur}>
                     <option value="" disabled>Select a budget range...</option>
-                    <option value="under-1k">Under $1,000</option>
-                    <option value="1k-3k">$1,000 – $3,000</option>
-                    <option value="3k-7k">$3,000 – $7,000</option>
-                    <option value="7k-plus">$7,000+</option>
+                    <option value="under-1k">Under {formatPrice(1000)}</option>
+                    <option value="1k-3k">{formatPrice(1000)} – {formatPrice(3000)}</option>
+                    <option value="3k-7k">{formatPrice(3000)} – {formatPrice(7000)}</option>
+                    <option value="7k-plus">{formatPrice(7000)}+</option>
                     <option value="unsure">Not sure — need guidance</option>
                   </select>
                 </div>
